@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ULTRAKILL // LIMBO-CASTLE</title>
+    <style>
+        @font-face { font-family: 'VCR OSD Mono'; src: local('VCR OSD Mono'), url('VCR_OSD_MONO.ttf'), url('input_file_0.ttf'); }
+        :root { --bg-color: #020502; --text-color: #ffffff; --accent-color: #ff3c3c; --terminal-blue: #00ffff; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'VCR OSD Mono', monospace; margin:0; overflow:hidden; }
+        .crt::after {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%); z-index: 9999; pointer-events: none;
+        }
+        #viewport { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
+        .interactive-grid { position: relative; flex-grow: 1; background: #050a05; border: 3px double #33dd33; margin: 10px; }
+        .click-object { position: absolute; background: #111; border: 1px solid #33dd33; color: #33dd33; padding: 8px 12px; cursor: pointer; font-family: inherit; }
+        .click-object:hover { background: #33dd33; color: #000; font-weight: bold; }
+        .boss-area { position: absolute; top: 20%; left: 30%; width: 40%; height: 35%; border: 2px dashed var(--accent-color); background: rgba(0,0,0,0.8); text-align: center; padding-top: 20px;}
+        .terminal-display { background: #000; border: 1px solid #33dd33; margin: 10px; padding: 15px; height: 100px; color: #33dd33; }
+        .hidden-link { display: none; text-decoration: none; background: var(--accent-color) !important; color: #000 !important; border-color: #fff !important; }
+    </style>
+</head>
+<body class="crt">
+<div id="viewport">
+    <div style="display:flex; justify-content:space-between; background:#000; padding:10px; border-bottom:1px solid #33dd33;">
+        <div style="color:#33dd33;">СИСТЕМА: СЛОЙ 1 // LIMBO</div>
+        <div id="status-ammo">ОРУЖИЕ: ЗАГРУЗКА...</div>
+    </div>
+
+    <div class="interactive-grid">
+        <div class="boss-area">
+            <strong style="color:var(--accent-color)">SWARDSMACHINE // МЕЧНИК</strong>
+            <pre style="color:var(--accent-color); font-size:0.8em; line-height:1;">
+    /\____/\
+   /        \
+
+  |  [0==0]  |=====(===O
+   \________/
+            </pre>
+        </div>
+
+        <button class="click-object" style="top: 65%; left: 10%;" onclick="triggerGlitch(1)">[ ERROR_CODE: 0x01 ]</button>
+        <button class="click-object" style="top: 75%; left: 75%;" onclick="triggerGlitch(2)">[ ERROR_CODE: 0x04 ]</button>
+        <button class="click-object" style="top: 80%; left: 30%;" onclick="triggerGlitch(3)">[ ERROR_CODE: 0x09 ]</button>
+
+        <a id="next-level" href="heresy.html" class="click-object hidden-link" style="top: 40%; left: 43%;">[ ПРОЙТИ В СЛОЙ ЕРЕСИ ]</a>
+    </div>
+
+    <div class="terminal-display" id="limbo-log">
+        Вы вошли в Лимб. Терминалы сымитировали здесь фальшивые сады и чистое небо, пряча истинный индустриальный кошмар.
+        Путь перекрыт Мечником. Активируйте протоколы системных сбоев (ERROR_CODES), чтобы перегрузить голограмму и открыть скрытую ссылку перемещения.
+    </div>
+</div>
+
+<script>
+    document.getElementById('status-ammo').innerText = "ОРУЖИЕ: " + (localStorage.getItem('v1_weapon') || 'НЕТ').toUpperCase();
+    let codes = [false, false, false];
+
+    function triggerGlitch(id) {
+        codes[id-1] = true;
+        document.getElementById('limbo-log').innerText = `Системная аномалия ${id} внедрена. Стабильность проекции падает...`;
+        if (codes[0] && codes[1] && codes[2]) {
+            document.getElementById('limbo-log').innerHTML = `<span style="color:#ff3c3c">[КРИТИЧЕСКИЙ СБОЙ] Иллюзия разрушена. Обнаружена точка прорыва пространства! Ссылка доступа активирована.</span>`;
+            document.getElementById('next-level').style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>
